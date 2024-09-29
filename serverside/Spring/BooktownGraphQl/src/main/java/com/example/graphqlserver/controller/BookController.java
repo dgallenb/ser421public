@@ -2,6 +2,8 @@ package com.example.graphqlserver.controller;
 
 import com.example.graphqlserver.dto.input.AddBookInput;
 import com.example.graphqlserver.dto.output.AddBookPayload;
+import com.example.graphqlserver.dto.input.DeleteBookInput;
+import com.example.graphqlserver.dto.output.DeleteBookPayload;
 import com.example.graphqlserver.model.Author;
 import com.example.graphqlserver.model.Book;
 import com.example.graphqlserver.repository.AuthorRepository;
@@ -36,6 +38,11 @@ public class BookController {
         return bookRepository.getBookByISBN(isbn);
     }
 
+    @QueryMapping
+    public List<Book> booksByAuthorId(@Argument("authorId") int authorId) { // NEW
+        return bookRepository.getBooksByAuthorId(authorId);
+    }
+
     @MutationMapping
     public AddBookPayload addBook(@Argument AddBookInput input) {
         Author author = authorRepository.getAuthorById(input.authorId());
@@ -45,6 +52,24 @@ public class BookController {
         var book = bookRepository.save(input.isbn(), input.title(), input.authorId());
         author.getBooks().add(book);
         var out = new AddBookPayload(book);
+        return out;
+    }
+
+    
+    @MutationMapping
+    public DeleteBookPayload deleteBook(@Argument DeleteBookInput input) { // NEW
+        Book book = bookRepository.getBookByISBN(input.isbn());
+        if (book == null) {
+            return null;
+        }
+
+        Author author = authorRepository.getAuthorById(book.getAuthorId());
+        String isbn = book.getIsbn();
+        author.getBooks().remove(book);
+
+        bookRepository.getBooks().remove(book);
+        
+        var out = new DeleteBookPayload(isbn);
         return out;
     }
 }

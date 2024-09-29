@@ -7,7 +7,7 @@ import java.util.List;
 public class Author {
 
     private int id;
-    private final String firstName;
+    private String firstName; // NEW: Removed final from this
 
     private List<Book> books = new ArrayList<>();
 
@@ -32,6 +32,10 @@ public class Author {
         return firstName;
     }
 
+    public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
     public String getLastName() {
         return lastName;
     }
@@ -43,6 +47,4 @@ public class Author {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
-
-
 }
