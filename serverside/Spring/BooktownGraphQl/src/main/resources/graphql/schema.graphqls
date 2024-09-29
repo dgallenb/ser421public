@@ -17,6 +17,9 @@ type Query {
 
     # NEW: Fetch a list of books by Author ID.
     authorsByLastName(lastName: String) : [Author]
+
+    # NEw: Fetch a list of books by Author first name.
+    bookTitlesByAuthorFirstName(firstName : String) : [String]
 }
 
 # Represents a book in the system.
