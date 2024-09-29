@@ -35,17 +35,4 @@ public class Book {
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
     }
-
-    // NEW
-    // Note: I should technically override the class's hash definition if I'm overriding .equals(), but it's not worth bothering with on this assignment.
-    public boolean equals(Object o) {
-        if(o instanceof Book) {
-            Book b = (Book) o;
-            if(b.getIsbn().equals(this.getIsbn())) {
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
 }

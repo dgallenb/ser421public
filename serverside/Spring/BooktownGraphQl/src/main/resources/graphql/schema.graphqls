@@ -11,15 +11,6 @@ type Query {
 
     # Fetch a book by its ISBN (International Standard Book Number).
     bookByISBN(isbn: String): Book
-
-    # NEW: Fetch a list of books by Author ID.
-    booksByAuthorId(authorId: ID) : [Book]
-
-    # NEW: Fetch a list of books by Author ID.
-    authorsByLastName(lastName: String) : [Author]
-
-    # NEw: Fetch a list of books by Author first name.
-    bookTitlesByAuthorFirstName(firstName : String) : [String]
 }
 
 # Represents a book in the system.
@@ -70,21 +61,6 @@ input AddBookInput {
     authorId: ID
 }
 
-# NEW: Input type for updating an author's first name.
-input UpdateAuthorInput {
-    # The author's ID
-    authorId: ID
-
-    # The author's new first name
-    newName: String
-}
-
-# NEW: Input type for updating an author's first name.
-input DeleteBookInput {
-    # The Book's ISBN
-    isbn: String
-}
-
 # Payload returned after successfully adding an author.
 type AddAuthorPayload {
     # The newly added author.
@@ -97,16 +73,6 @@ type AddBookPayload {
     book: Book
 }
 
-# NEW: Payload returned after successfully updating an Author's first name.
-type UpdateAuthorPayload {
-    firstName: String
-}
-
-# NEW: Payload returned after deleting a book by ISBN
-type DeleteBookPayload {
-    isbn: String
-}
-
 # The root Mutation type defines the entry points for mutating data.
 type Mutation {
     # Add a new author to the system.
@@ -114,10 +80,4 @@ type Mutation {
 
     # Add a new book to the system.
     addBook(input: AddBookInput): AddBookPayload
-
-    # NEW: Update an Author's first name based on the author's ID. 
-    updateAuthor(input: UpdateAuthorInput): UpdateAuthorPayload
-
-    # NEW: Delete a book based on its ISBN.
-    deleteBook(input: DeleteBookInput) : DeleteBookPayload
 }

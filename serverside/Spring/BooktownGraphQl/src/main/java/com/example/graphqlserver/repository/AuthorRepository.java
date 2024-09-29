@@ -1,6 +1,5 @@
 package com.example.graphqlserver.repository;
 
-import com.example.graphqlserver.model.Author;
 import com.example.graphqlserver.model.Book;
 import org.springframework.stereotype.Repository;
 
@@ -10,55 +9,45 @@ import java.util.List;
 
 
 @Repository
-public class AuthorRepository {
-    private static ArrayList<Author> dummyAuthors = new ArrayList<>();
+public class BookRepository {
+
+    private static ArrayList<Book> dummyBooks = new ArrayList<>();
 
     static {
-        Author author1 = new Author(0, "Robert", "Frost", BookRepository.getBooksByAuthorId(0));
-        Author author2 = new Author(1, "Martin", "Fowler", BookRepository.getBooksByAuthorId(1));
-        Author author3 = new Author(2, "Kevin", "Gary", BookRepository.getBooksByAuthorId(2));
-
-        dummyAuthors.addAll(Arrays.asList(author1, author2, author3));
+        dummyBooks.addAll(Arrays.asList(
+                new Book("123456789", "The Road Not Taken", 0),
+                new Book("987654321", "To Kill a Mockingbird", 1),
+                new Book("456789123", "The Great Gatsby", 2)
+        ));
     }
 
-    public List<Author> getAuthors() {
-        return dummyAuthors;
+    public List<Book> getBooks() {
+        return dummyBooks;
     }
 
-    public Author getAuthorById(int id) {
-        for (Author author : dummyAuthors) {
-            if (author.getId() == id) {
-                return author;
+    public Book getBookByISBN(String isbn) {
+        for (Book book : dummyBooks) {
+            if (book.getIsbn().equals(isbn)) {
+                return book;
             }
         }
         return null;
     }
 
-    public List<Author> getAuthorsByLastName(String lastName) { // NEW
-        List<Author> output = new ArrayList<>();
-        for (Author author : dummyAuthors) {
-            if (author.getLastName().equals(lastName)) {
-                output.add(author);
-            }
-        }
-        return output;
+    public Book save(String isbn, String title, int authorId) {
+        Book newBook = new Book(isbn, title, authorId);
+        dummyBooks.add(newBook);
+        return newBook;
     }
 
-    public List<Author> getAuthorsByFirstName(String firstName) { // NEW
-        List<Author> output = new ArrayList<>();
-        for (Author author : dummyAuthors) {
-            if (author.getFirstName().equals(firstName)) {
-                output.add(author);
+    public static ArrayList<Book> getBooksByAuthorId(int id) {
+        ArrayList<Book> bookList = new ArrayList<>();
+        for (Book book : dummyBooks) {
+            if (book.getAuthorId() == id) {
+                bookList.add(book);
             }
         }
-        return output;
+        return bookList;
     }
 
-    public Author save(String firstName, String lastName) {
-        List<Book> book = new ArrayList<>();
-        int nextId = dummyAuthors.isEmpty() ? 0 : dummyAuthors.get(dummyAuthors.size() - 1).getId() + 1;
-        Author newAuthor = new Author(nextId, firstName, lastName, book);
-        dummyAuthors.add(newAuthor);
-        return newAuthor;
-    }
 }
