@@ -13,12 +13,14 @@ public class Author {
     private final String firstName;
     private final String lastName;
 
-    //private List<Book> books = new ArrayList<>();
+    @OneToMany
+    private List<Book> books = new ArrayList<>();
 
     public Author() {
         this.id = -1;
         this.firstName = "Dummy";
         this.lastName = "Dummy";
+        this.books = new ArrayList<Book>();
 
     }
 
@@ -26,7 +28,7 @@ public class Author {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        //this.books = books;
+        this.books = new ArrayList<Book>();
     }
 
     
@@ -47,14 +49,21 @@ public class Author {
         return lastName;
     }
 
-    /*
+    
     public List<Book> getBooks() {
         return books;
+    }
+
+    public void addBook(Book b) {
+        if (books == null) {
+            this.books = new ArrayList<Book>();
+        }
+        books.add(b);
     }
 
     public void setBooks(List<Book> books) {
         this.books = books;
     }
-    */
+    
 
 }

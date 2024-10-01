@@ -15,13 +15,12 @@ public class BookInitializer {
 	@Bean
     CommandLineRunner bookCommandLineRunner(BookRepository bookRepository) {
         return args -> {
-            // grocery items initialization
+            // book initialization
         	List<Book> books = Arrays.asList(
     			new Book("123456789", "The Road Not Taken", 0),
                 new Book("987654321", "To Kill a Mockingbird", 1),
                 new Book("456789123", "The Great Gatsby", 2)
     		);
-            System.out.println("DEBUGGING HERE: MADE IT TO BOOK INITIALIZER");
         	
         	bookRepository.saveAll(books);
         };

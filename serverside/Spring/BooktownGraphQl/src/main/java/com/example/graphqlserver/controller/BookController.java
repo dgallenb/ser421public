@@ -13,9 +13,12 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Controller
 public class BookController {
+
+    private static BookController centralControl;
 
     private final BookService bookService;
     private final AuthorService authorService;
@@ -24,6 +27,13 @@ public class BookController {
     public BookController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
         this.authorService = authorService;
+
+        BookController.centralControl = this; // Trying to jury rig a singleton.
+        
+    }
+
+    public static BookController getController() {
+        return centralControl;
     }
 
     @QueryMapping
@@ -46,5 +56,29 @@ public class BookController {
         //author.getBooks().add(book);
         var out = new AddBookPayload(book);
         return out;
+    }
+
+    @QueryMapping
+    public List<Book> booksByAuthorId(@Argument("authorId") int authorId) { // NEW
+        return bookService.getBooksByAuthorId(authorId);
+    }
+
+    @QueryMapping
+    public List<String> bookTitlesByAuthorFirstName(@Argument("firstName") String firstName) { // NEW
+        List<String> bookTitles = new ArrayList<String>();
+
+        // 1. Get authors by first name
+        List<Author> authors = authorRepository.getAuthorsByFirstName(firstName);
+
+        // 2. Extract their books.
+        for(Author author : authors) {
+            List<Book> books = author.getBooks();
+
+            for(Book book : books) {
+                bookTitles.add(book.getTitle());
+            }
+        }
+
+        return bookTitles;
     }
 }

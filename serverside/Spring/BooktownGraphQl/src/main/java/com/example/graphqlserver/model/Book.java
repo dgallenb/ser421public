@@ -76,6 +76,6 @@ public class Book {
     }
 
     public boolean isLinked() {
-        return this.author == null;
+        return (this.author != null);
     }
 }

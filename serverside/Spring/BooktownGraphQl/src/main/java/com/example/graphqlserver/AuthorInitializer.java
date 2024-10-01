@@ -16,7 +16,7 @@ import com.example.graphqlserver.service.BookService;
 public class AuthorInitializer {
 	
 	@Bean
-    CommandLineRunner groceryItemsCommandLineRunner(AuthorRepository authorRepository) {
+    CommandLineRunner authorCommandLineRunner(AuthorRepository authorRepository) {
         return args -> {
             // grocery items initialization
         	List<Author> authors = Arrays.asList(
@@ -25,7 +25,6 @@ public class AuthorInitializer {
                 new Author(2, "Kevin", "Gary")
     				
     		);
-            System.out.println("DEBUGGING HERE: MADE IT TO AUTHOR INITIALIZER");
         	
         	authorRepository.saveAll(authors);
         };
