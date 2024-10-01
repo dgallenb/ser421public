@@ -4,8 +4,8 @@ import com.example.graphqlserver.dto.input.AddBookInput;
 import com.example.graphqlserver.dto.output.AddBookPayload;
 import com.example.graphqlserver.model.Author;
 import com.example.graphqlserver.model.Book;
-import com.example.graphqlserver.repository.AuthorRepository;
-import com.example.graphqlserver.repository.BookRepository;
+import com.example.graphqlserver.service.AuthorService;
+import com.example.graphqlserver.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -17,32 +17,32 @@ import java.util.List;
 @Controller
 public class BookController {
 
-    private final BookRepository bookRepository;
-    private final AuthorRepository authorRepository;
+    private final BookService bookService;
+    private final AuthorService authorService;
 
     @Autowired
-    public BookController(BookRepository bookRepository, AuthorRepository authorRepository) {
-        this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
+    public BookController(BookService bookService, AuthorService authorService) {
+        this.bookService = bookService;
+        this.authorService = authorService;
     }
 
     @QueryMapping
     public List<Book> books() {
-        return bookRepository.getBooks();
+        return bookService.getBooks();
     }
 
     @QueryMapping
     public  Book bookByISBN(@Argument("isbn") String isbn) {
-        return bookRepository.getBookByISBN(isbn);
+        return bookService.getBookByISBN(isbn);
     }
 
     @MutationMapping
     public AddBookPayload addBook(@Argument AddBookInput input) {
-        Author author = authorRepository.getAuthorById(input.authorId());
+        Author author = authorService.getAuthorById(input.authorId());
         if (author == null) {
             throw  new IllegalArgumentException("Author with ID " + input.authorId() + "does not exist");
         }
-        var book = bookRepository.save(input.isbn(), input.title(), input.authorId());
+        Book book = bookService.save(input.isbn(), input.title(), input.authorId());
         author.getBooks().add(book);
         var out = new AddBookPayload(book);
         return out;

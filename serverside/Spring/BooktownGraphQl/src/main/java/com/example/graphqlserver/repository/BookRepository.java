@@ -1,5 +1,8 @@
 package com.example.graphqlserver.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
 import com.example.graphqlserver.model.Book;
 import org.springframework.stereotype.Repository;
 
@@ -9,23 +12,15 @@ import java.util.List;
 
 
 @Repository
-public class BookRepository {
+public interface BookRepository extends JpaRepository<Book, String> {
 
-    private static ArrayList<Book> dummyBooks = new ArrayList<>();
-
-    static {
-        dummyBooks.addAll(Arrays.asList(
-                new Book("123456789", "The Road Not Taken", 0),
-                new Book("987654321", "To Kill a Mockingbird", 1),
-                new Book("456789123", "The Great Gatsby", 2)
-        ));
-    }
-
+    /*
     public List<Book> getBooks() {
-        return dummyBooks;
+        return findAll();
     }
 
     public Book getBookByISBN(String isbn) {
+        List<Book> dummyBooks = super.findAll();
         for (Book book : dummyBooks) {
             if (book.getIsbn().equals(isbn)) {
                 return book;
@@ -36,12 +31,14 @@ public class BookRepository {
 
     public Book save(String isbn, String title, int authorId) {
         Book newBook = new Book(isbn, title, authorId);
+        super.save(newBook, isbn);
         dummyBooks.add(newBook);
         return newBook;
     }
 
     public static ArrayList<Book> getBooksByAuthorId(int id) {
         ArrayList<Book> bookList = new ArrayList<>();
+        List<Book> dummyBooks = super.findAll();
         for (Book book : dummyBooks) {
             if (book.getAuthorId() == id) {
                 bookList.add(book);
@@ -49,5 +46,6 @@ public class BookRepository {
         }
         return bookList;
     }
-
+    
+    */
 }
