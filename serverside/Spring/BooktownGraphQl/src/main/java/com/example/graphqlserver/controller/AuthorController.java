@@ -83,4 +83,19 @@ public class AuthorController {
         var out = new AddAuthorPayload(author);
         return out;
     }
+
+    @MutationMapping
+    public UpdateAuthorPayload updateAuthor(@Argument UpdateAuthorInput input) { // NEW
+        var author = authorById(input.authorId());
+        if(author != null) {
+            String output = author.getFirstName();
+            
+            author.setFirstName(input.newName());
+
+            return new UpdateAuthorPayload(output);
+        }
+        else {
+            return null;
+        }
+    }
 }
