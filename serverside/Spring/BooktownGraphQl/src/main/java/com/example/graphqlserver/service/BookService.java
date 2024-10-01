@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 import com.example.graphqlserver.model.Book;
+import com.example.graphqlserver.model.Author;
 import com.example.graphqlserver.repository.BookRepository;
 
 @Service
@@ -47,8 +48,8 @@ public class BookService {
 		return output;
 	}
 	
-	public Book save(String isbn, String title, int authorId) {
-		Book book = new Book(isbn, title, authorId);
+	public Book save(String isbn, String title, Author author) {
+		Book book = new Book(isbn, title, author);
 		bookRepository.save(book);
 		return book;
 	}

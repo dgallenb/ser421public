@@ -49,11 +49,7 @@ public class AuthorService {
 	}
 	
 	public Author addAuthor(String firstName, String lastName) {
-		Author a = new Author(nextId(),
-					firstName,
-					lastName,
-					new ArrayList<Book>()
-					);
+		Author a = new Author(nextId(), firstName, lastName);
 		authorRepository.save(a);
 		return a;
 	}

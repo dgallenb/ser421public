@@ -1,15 +1,38 @@
 package com.example.graphqlserver.model;
 
+import jakarta.persistence.*;
+import com.example.graphqlserver.model.Author;
+
+
+@Entity
 public class Book {
+    @Id
     private String isbn;
     private String title;
 
-    private int authorId;
+    @ManyToOne
+    private Author author;
+
+    private int tempId;
+
+    public Book() {
+        this.isbn = "";
+        this.title = "";
+        this.tempId = -2;
+    }
+
+    public Book(String isbn, String title, Author author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.tempId = author.getId();
+    }
 
     public Book(String isbn, String title, int authorId) {
         this.isbn = isbn;
         this.title = title;
-        this.authorId = authorId;
+        this.tempId = authorId;
+        
     }
 
     public String getIsbn() {
@@ -28,11 +51,31 @@ public class Book {
         this.title = title;
     }
 
+    public Author getAuthor() {
+        return this.author;
+    }
+
+    public void setAuthor(Author a) {
+        this.author = a;
+    }
+
     public int getAuthorId() {
-        return authorId;
+        if(isLinked()) {
+            return author.getId();
+        }
+        return tempId;
     }
 
     public void setAuthorId(int authorId) {
-        this.authorId = authorId;
+        if(isLinked()) {
+            this.author.setId(authorId);
+        }
+        else {
+            this.tempId = authorId;
+        }
+    }
+
+    public boolean isLinked() {
+        return this.author == null;
     }
 }

@@ -21,6 +21,7 @@ public class BookInitializer {
                 new Book("987654321", "To Kill a Mockingbird", 1),
                 new Book("456789123", "The Great Gatsby", 2)
     		);
+            System.out.println("DEBUGGING HERE: MADE IT TO BOOK INITIALIZER");
         	
         	bookRepository.saveAll(books);
         };

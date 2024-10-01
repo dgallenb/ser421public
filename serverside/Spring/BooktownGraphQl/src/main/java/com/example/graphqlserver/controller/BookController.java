@@ -32,7 +32,7 @@ public class BookController {
     }
 
     @QueryMapping
-    public  Book bookByISBN(@Argument("isbn") String isbn) {
+    public  Book bookById(@Argument("isbn") String isbn) {
         return bookService.getBookByISBN(isbn);
     }
 
@@ -42,8 +42,8 @@ public class BookController {
         if (author == null) {
             throw  new IllegalArgumentException("Author with ID " + input.authorId() + "does not exist");
         }
-        Book book = bookService.save(input.isbn(), input.title(), input.authorId());
-        author.getBooks().add(book);
+        Book book = bookService.save(input.isbn(), input.title(), author);
+        //author.getBooks().add(book);
         var out = new AddBookPayload(book);
         return out;
     }

@@ -20,11 +20,12 @@ public class AuthorInitializer {
         return args -> {
             // grocery items initialization
         	List<Author> authors = Arrays.asList(
-                new Author(0, "Robert", "Frost", Arrays.asList(new Book("123456789", "The Road Not Taken", 0))),
-                new Author(1, "Martin", "Fowler", Arrays.asList(new Book("987654321", "To Kill a Mockingbird", 1))),
-                new Author(2, "Kevin", "Gary", Arrays.asList(new Book("456789123", "The Great Gatsby", 2)))
+                new Author(0, "Robert", "Frost"),
+                new Author(1, "Martin", "Fowler"),
+                new Author(2, "Kevin", "Gary")
     				
     		);
+            System.out.println("DEBUGGING HERE: MADE IT TO AUTHOR INITIALIZER");
         	
         	authorRepository.saveAll(authors);
         };
