@@ -10,7 +10,7 @@ public class Author {
 
     @Id
     private int id;
-    private final String firstName;
+    private String firstName;
     private final String lastName;
 
     @OneToMany
@@ -47,6 +47,10 @@ public class Author {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
     

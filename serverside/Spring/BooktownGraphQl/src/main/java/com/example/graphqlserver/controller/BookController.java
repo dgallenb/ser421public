@@ -2,6 +2,8 @@ package com.example.graphqlserver.controller;
 
 import com.example.graphqlserver.dto.input.AddBookInput;
 import com.example.graphqlserver.dto.output.AddBookPayload;
+import com.example.graphqlserver.dto.input.DeleteBookInput;
+import com.example.graphqlserver.dto.output.DeleteBookPayload;
 import com.example.graphqlserver.model.Author;
 import com.example.graphqlserver.model.Book;
 import com.example.graphqlserver.service.AuthorService;
@@ -67,8 +69,10 @@ public class BookController {
     public List<String> bookTitlesByAuthorFirstName(@Argument("firstName") String firstName) { // NEW
         List<String> bookTitles = new ArrayList<String>();
 
+
+
         // 1. Get authors by first name
-        List<Author> authors = authorRepository.getAuthorsByFirstName(firstName);
+        List<Author> authors = AuthorController.getController().getAuthorsByFirstName(firstName);
 
         // 2. Extract their books.
         for(Author author : authors) {
@@ -80,5 +84,25 @@ public class BookController {
         }
 
         return bookTitles;
+    }
+
+    @MutationMapping
+    public DeleteBookPayload deleteBook(@Argument DeleteBookInput input) { // NEW
+        Book b = bookService.getBookByISBN(input.isbn());
+        
+        if (b == null) {
+            return new DeleteBookPayload(null);
+        }
+
+        AuthorController.getController().removeBookFromAuthor(b.getAuthorId(), input.isbn());
+
+
+        String result = bookService.deleteBook(input.isbn());
+
+        if(result.equals(input.isbn())) {
+            return new DeleteBookPayload(result);
+        }
+        
+        return new DeleteBookPayload(null);
     }
 }

@@ -39,6 +39,17 @@ public class AuthorService {
 		return null;
 	}
 
+    public List<Author> getAuthorsByLastName(String lastName) {
+    	List<Author> output = new ArrayList<Author>();
+    	List<Author> authors = authorRepository.findAll();
+		for(Author a : authors) {
+			if(a.getLastName().equals(lastName)) {
+				output.add(a);
+			}
+		}
+        return output;
+    }
+
 	private int nextId() {
 		List<Author> l = authorRepository.findAll();
 		if(l != null) {
@@ -52,5 +63,25 @@ public class AuthorService {
 		Author a = new Author(nextId(), firstName, lastName);
 		authorRepository.save(a);
 		return a;
+	}
+
+	public Author removeBookFromAuthor(int id, String isbn) {
+		Author a = getAuthorById(id);
+		List<Book> books = a.getBooks();
+		for(Book book : books) {
+			if(book.getIsbn().equals(isbn)) {
+				books.remove(book);
+				break;
+			}
+		}
+		return a;
+	}
+
+	public String updateAuthor(int id, String firstName) {
+		Author a = authorRepository.getReferenceById(id);
+		String output = a.getFirstName();
+		a.setFirstName(firstName);
+		authorRepository.saveAndFlush(a);
+		return output;
 	}
 }

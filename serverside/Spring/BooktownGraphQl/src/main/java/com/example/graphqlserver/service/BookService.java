@@ -47,6 +47,17 @@ public class BookService {
 		}
 		return output;
 	}
+
+	public String deleteBook(String isbn) {
+		Book b = bookRepository.getReferenceById(isbn);
+		String output = b.getIsbn();
+		ArrayList<String> deleteMe = new ArrayList<String>();
+		deleteMe.add(isbn);
+		bookRepository.deleteAllByIdInBatch(deleteMe);
+
+		System.out.println("Deleted? " + (bookRepository.getReferenceById(isbn) == null));
+		return output;
+	}
 	
 	public Book save(String isbn, String title, Author author) {
 		Book book = new Book(isbn, title, author);
